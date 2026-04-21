@@ -25,8 +25,10 @@ class RepresentanteSerializer(serializers.ModelSerializer):
         model = Representante
         fields = '__all__'
 
-
+        
 class ReservaSerializer(serializers.ModelSerializer):
+    cliente_nombre = serializers.CharField(source='cliente.nombre', read_only=True)
+
     class Meta:
         model = Reserva
         fields = '__all__'

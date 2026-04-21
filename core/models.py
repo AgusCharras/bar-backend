@@ -99,6 +99,7 @@ class Representante(models.Model):
 
 
 class Reserva(models.Model):
+    
     cliente = models.ForeignKey(
         Cliente,
         on_delete=models.CASCADE,
@@ -137,3 +138,6 @@ class Reserva(models.Model):
 
     def __str__(self):
         return f"{self.cliente.nombre} - {self.fecha} {self.hora_inicio}"
+    
+    class Meta:
+        ordering = ['-fecha', '-hora_inicio']

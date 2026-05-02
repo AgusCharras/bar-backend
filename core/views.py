@@ -9,6 +9,9 @@ from .serializers import (
     RepresentanteSerializer
 )
 
+from rest_framework.permissions import IsAuthenticated
+from .permissions import EsRepresentante, EsEncargadoOJefe, EsJefe, PuedeCrearCliente
+
 '''
     ModelViewSet te da automaticamente:
         GET (listar)
@@ -25,6 +28,11 @@ class ClienteViewSet(viewsets.ModelViewSet):
 
     filter_backends = [filters.SearchFilter]
     search_fields = ['nombre', 'telefono']
+    
+    def get_permissions(self):
+        if self.action == 'create':
+            return [IsAuthenticated(), (PuedeCrearCliente())]
+        return [IsAuthenticated()]
 
 
 class ReservaViewSet(viewsets.ModelViewSet):
@@ -51,12 +59,26 @@ class ReservaViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return [IsAuthenticated(), (EsEncargadoOJefe())]
+        return [IsAuthenticated()]
 
 class VoucherViewSet(viewsets.ModelViewSet):
     queryset = Voucher.objects.all()
     serializer_class = VoucherSerializer
+    
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'destroy']:
+            return [IsAuthenticated(), EsJefe()]
+        return [IsAuthenticated()]
 
 
 class RepresentanteViewSet(viewsets.ModelViewSet):
     queryset = Representante.objects.all()
     serializer_class = RepresentanteSerializer
+
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'destroy']:
+            return [IsAuthenticated(), EsJefe()]
+        return [IsAuthenticated()]

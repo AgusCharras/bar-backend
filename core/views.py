@@ -32,7 +32,8 @@ class ClienteViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action == 'create':
             return [IsAuthenticated(), (PuedeCrearCliente())]
-        return [IsAuthenticated()]
+        #return [IsAuthenticated()]
+        return []
 
 
 class ReservaViewSet(viewsets.ModelViewSet):
@@ -62,7 +63,8 @@ class ReservaViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update']:
             return [IsAuthenticated(), (EsEncargadoOJefe())]
-        return [IsAuthenticated()]
+        #return [IsAuthenticated()]
+        return []
 
 class VoucherViewSet(viewsets.ModelViewSet):
     queryset = Voucher.objects.all()
@@ -71,7 +73,9 @@ class VoucherViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['create', 'update', 'destroy']:
             return [IsAuthenticated(), EsJefe()]
-        return [IsAuthenticated()]
+        #return [IsAuthenticated()]
+        return []
+        
 
 
 class RepresentanteViewSet(viewsets.ModelViewSet):
@@ -81,4 +85,5 @@ class RepresentanteViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['create', 'update', 'destroy']:
             return [IsAuthenticated(), EsJefe()]
-        return [IsAuthenticated()]
+        #return [IsAuthenticated()]
+        return []

@@ -125,6 +125,11 @@ class Reserva(models.Model):
     #hora_fin = models.TimeField(null=True, blank=True)
 
     cantidad_personas = models.PositiveIntegerField()
+    
+    cantidad_personas_reales = models.PositiveIntegerField(
+        null=True,
+        blank=True
+    )    
 
     estado = models.CharField(
         max_length=15,

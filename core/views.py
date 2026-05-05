@@ -31,9 +31,7 @@ class ClienteViewSet(viewsets.ModelViewSet):
     
     def get_permissions(self):
         if self.action == 'create':
-            
-            #return [IsAuthenticated(), (PuedeCrearCliente())]
-            return []
+            return [IsAuthenticated(), (PuedeCrearCliente())]
         #return [IsAuthenticated()]
         return []
 
@@ -64,8 +62,7 @@ class ReservaViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update']:
-            return []
-            #return [IsAuthenticated(), (EsEncargadoOJefe())]
+            return [IsAuthenticated(), (EsEncargadoOJefe())]
         #return [IsAuthenticated()]
         return []
 

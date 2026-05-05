@@ -122,7 +122,7 @@ class Reserva(models.Model):
 
     fecha = models.DateField()
     hora_inicio = models.TimeField()
-    hora_fin = models.TimeField()
+    hora_fin = models.TimeField(null=True, blank=True)
 
     cantidad_personas = models.PositiveIntegerField()
 

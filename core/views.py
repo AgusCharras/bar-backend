@@ -9,6 +9,7 @@ from .serializers import (
     RepresentanteSerializer
 )
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from .permissions import EsRepresentante, EsEncargadoOJefe, EsJefe, PuedeCrearCliente
 
@@ -26,8 +27,9 @@ class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
 
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['nombre', 'telefono']
+    filterset_fields = ['turno', 'cumpleanios']
     
     def get_permissions(self):
         if self.action == 'create':

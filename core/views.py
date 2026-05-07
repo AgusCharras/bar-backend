@@ -12,6 +12,8 @@ from .serializers import (
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from .permissions import EsRepresentante, EsEncargadoOJefe, EsJefe, PuedeCrearCliente
+from django.db.models import Q
+
 
 '''
     ModelViewSet te da automaticamente:
@@ -40,7 +42,15 @@ class ClienteViewSet(viewsets.ModelViewSet):
 
 
 class ReservaViewSet(viewsets.ModelViewSet):
-    queryset = Reserva.objects.all()
+    #queryset = Reserva.objects.all()
+
+    queryset = Reserva.objects.select_related(
+        'cliente',
+        'representante'
+    ).prefetch_related(
+        'vouchers'
+    )
+    
     serializer_class = ReservaSerializer
     
     filter_backends = [filters.SearchFilter]
@@ -56,6 +66,8 @@ class ReservaViewSet(viewsets.ModelViewSet):
         fecha_desde = self.request.query_params.get('fecha_desde')
         fecha_hasta = self.request.query_params.get('fecha_hasta')
         estado = self.request.query_params.get('estado')
+        representante = self.request.query_params.get('representante')
+        turno = self.request.query_params.get('turno')
 
         if fecha:
             queryset = queryset.filter(fecha=fecha)
@@ -68,7 +80,13 @@ class ReservaViewSet(viewsets.ModelViewSet):
 
         if estado:
             queryset = queryset.filter(estado=estado)
+            
+        if representante:
+            queryset = queryset.filter(Q(representante__nombre__icontains=representante) | Q(representante__apodo__icontains=representante))
 
+        if turno:
+            queryset = queryset.filter(cliente__turno=turno)
+            
         return queryset
 
     def get_permissions(self):

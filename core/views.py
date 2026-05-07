@@ -68,6 +68,7 @@ class ReservaViewSet(viewsets.ModelViewSet):
         estado = self.request.query_params.get('estado')
         representante = self.request.query_params.get('representante')
         turno = self.request.query_params.get('turno')
+        hora = self.request.query_params.get('hora')
 
         if fecha:
             queryset = queryset.filter(fecha=fecha)
@@ -86,6 +87,9 @@ class ReservaViewSet(viewsets.ModelViewSet):
 
         if turno:
             queryset = queryset.filter(cliente__turno=turno)
+            
+        if hora:
+            queryset = queryset.filter(hora_inicio=hora)
             
         return queryset
 

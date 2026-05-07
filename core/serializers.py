@@ -8,6 +8,7 @@ JSON -> MODELOS
 '''
 
 
+
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
@@ -32,3 +33,10 @@ class ReservaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reserva
         fields = '__all__'
+        
+    def validate_hora_inicio(self, value):
+        if value.minute not in [0, 30]:
+            raise serializers.ValidationError(
+                "La hora debe ser en intervalos de 30 minutos."
+            )
+        return value

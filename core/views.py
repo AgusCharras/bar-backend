@@ -45,7 +45,7 @@ class ClienteViewSet(viewsets.ModelViewSet):
         if mes:
             queryset = queryset.filter(cumpleanios__month=mes)
         
-        return self.queryset
+        return queryset
     
     def get_permissions(self):
         if self.action == 'create':

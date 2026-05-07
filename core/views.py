@@ -31,10 +31,12 @@ class ClienteViewSet(viewsets.ModelViewSet):
 
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['nombre', 'telefono']
-    filterset_fields = ['turno', 'cumpleanios']
+    filterset_fields = ['turno']
     
     def get_queryset(self):
         queryset = super().get_queryset()
+        
+        queryset = queryset.exclude(cumpleanios__isnull=True)
         
         dia = self.request.query_params.get("dia")
         mes = self.request.query_params.get("mes")

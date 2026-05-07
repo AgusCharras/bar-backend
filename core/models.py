@@ -33,6 +33,11 @@ class EstadoReserva(models.TextChoices):
     COMPLETADO = "completado", "Completado"
     NO_SHOW = "no_show", "No asistió"
 
+class TipoEntrada(models.TextChoices):
+    FREE_CON_REPRESENTANTE = "free_con_representante", "Free con representante"
+    FREE_SIN_REPRESENTANTE = "free_sin_representante", "Free sin representante"
+    COBRADA_CON_CONSUMIBLE = "cobrada_con_consumible", "Cobrada con consumible"
+    COBRADA_SIN_CONSUMIBLE = "cobrada_sin_consumible", "Cobrada sin consumible"
 
 # =========================
 # MODELOS
@@ -135,6 +140,12 @@ class Reserva(models.Model):
         max_length=15,
         choices=EstadoReserva.choices,
         default=EstadoReserva.RESERVADO
+    )
+    
+    tipo_entrada = models.CharField(
+    max_length=35,
+    choices=TipoEntrada.choices,
+    default=TipoEntrada.FREE_SIN_REPRESENTANTE
     )
 
     observaciones = models.TextField(blank=True)

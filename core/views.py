@@ -53,10 +53,18 @@ class ReservaViewSet(viewsets.ModelViewSet):
         queryset = super().get_queryset()
 
         fecha = self.request.query_params.get('fecha')
+        fecha_desde = self.request.query_params.get('fecha_desde')
+        fecha_hasta = self.request.query_params.get('fecha_hasta')
         estado = self.request.query_params.get('estado')
 
         if fecha:
             queryset = queryset.filter(fecha=fecha)
+            
+        if fecha_desde:
+            queryset = queryset.filter(fecha__gte = fecha_desde)
+            
+        if fecha_hasta:
+            queryset = queryset.filter(fecha__lte = fecha_hasta)
 
         if estado:
             queryset = queryset.filter(estado=estado)

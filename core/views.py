@@ -33,6 +33,20 @@ class ClienteViewSet(viewsets.ModelViewSet):
     search_fields = ['nombre', 'telefono']
     filterset_fields = ['turno', 'cumpleanios']
     
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        dia = self.request.query_params.get("dia")
+        mes = self.request.query_params.get("mes")
+        
+        if dia:
+            queryset = queryset.filter(cumpleanios__day=dia)
+            
+        if mes:
+            queryset = queryset.filter(cumpleanios__month=mes)
+        
+        return self.queryset
+    
     def get_permissions(self):
         if self.action == 'create':
             #return [IsAuthenticated(), (PuedeCrearCliente())]

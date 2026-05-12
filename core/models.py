@@ -34,8 +34,7 @@ class EstadoReserva(models.TextChoices):
     NO_SHOW = "no_show", "No asistió"
 
 class TipoEntrada(models.TextChoices):
-    FREE_CON_REPRESENTANTE = "free_con_representante", "Free con representante"
-    FREE_SIN_REPRESENTANTE = "free_sin_representante", "Free sin representante"
+    FREE = "free", "Free"
     COBRADA_CON_CONSUMIBLE = "cobrada_con_consumible", "Cobrada con consumible"
     COBRADA_SIN_CONSUMIBLE = "cobrada_sin_consumible", "Cobrada sin consumible"
 
@@ -102,7 +101,6 @@ class Representante(models.Model):
     def __str__(self):
         return self.apodo or self.nombre
 
-
 class Reserva(models.Model):
     
     cliente = models.ForeignKey(
@@ -145,7 +143,7 @@ class Reserva(models.Model):
     tipo_entrada = models.CharField(
     max_length=35,
     choices=TipoEntrada.choices,
-    default=TipoEntrada.FREE_SIN_REPRESENTANTE
+    default=TipoEntrada.FREE
     )
 
     observaciones = models.TextField(blank=True)
@@ -157,3 +155,49 @@ class Reserva(models.Model):
     
     class Meta:
         ordering = ['-fecha', '-hora_inicio']
+
+class Entrada(models.Model):
+
+    fecha = models.DateField()
+
+    representante = models.ForeignKey(
+        Representante,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="entradas"
+    )
+
+    tipo = models.CharField(
+        max_length=35,
+        choices=TipoEntrada.choices
+    )
+
+    cantidad_personas = models.PositiveIntegerField(default=1)
+
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.fecha} - {self.tipo}"
+class AsistenciaRepresentante(models.Model):
+
+    representante = models.ForeignKey(
+        Representante,
+        on_delete=models.CASCADE,
+        related_name="asistencias"
+    )
+
+    fecha = models.DateField()
+
+    presente = models.BooleanField(default=True)
+
+    observaciones = models.TextField(blank=True)
+
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.representante} - {self.fecha}"
+    
+    class Meta:
+        #ordering = ['-fecha', '-hora_inicio']
+        ordering = ['-fecha']

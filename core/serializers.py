@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Cliente, Reserva, Voucher, Representante
+from .models import Cliente, Reserva, Voucher, Representante, Entrada, AsistenciaRepresentante
 
 '''
 Estos Serializers convierten:
@@ -40,3 +40,14 @@ class ReservaSerializer(serializers.ModelSerializer):
                 "La hora debe ser en intervalos de 30 minutos."
             )
         return value
+    
+class EntradaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Entrada
+        fields = '__all__'
+
+
+class AsistenciaRepresentanteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AsistenciaRepresentante
+        fields = '__all__'

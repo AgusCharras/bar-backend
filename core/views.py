@@ -1,12 +1,14 @@
 from django.shortcuts import render
 
 from rest_framework import viewsets, filters
-from .models import Cliente, Reserva, Voucher, Representante
+from .models import Cliente, Reserva, Voucher, Representante, Entrada, AsistenciaRepresentante
 from .serializers import (
     ClienteSerializer,
     ReservaSerializer,
     VoucherSerializer,
-    RepresentanteSerializer
+    RepresentanteSerializer,
+    EntradaSerializer,
+    AsistenciaRepresentanteSerializer
 )
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -137,3 +139,52 @@ class RepresentanteViewSet(viewsets.ModelViewSet):
             return [IsAuthenticated(), EsJefe()]
         #return [IsAuthenticated()]
         return []
+    
+class EntradaViewSet(viewsets.ModelViewSet):
+
+    queryset = Entrada.objects.select_related(
+        'cliente',
+        'representante'
+    )
+
+    serializer_class = EntradaSerializer
+
+    filter_backends = [filters.SearchFilter]
+
+    search_fields = [
+        'cliente__nombre',
+        'representante__nombre',
+        'representante__apodo',
+    ]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        fecha = self.request.query_params.get('fecha')
+        tipo = self.request.query_params.get('tipo')
+
+        if fecha:
+            queryset = queryset.filter(fecha=fecha)
+
+        if tipo:
+            queryset = queryset.filter(tipo=tipo)
+
+        return queryset
+    
+class AsistenciaRepresentanteViewSet(viewsets.ModelViewSet):
+
+    queryset = AsistenciaRepresentante.objects.select_related(
+        'representante'
+    )
+
+    serializer_class = AsistenciaRepresentanteSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        fecha = self.request.query_params.get('fecha')
+
+        if fecha:
+            queryset = queryset.filter(fecha=fecha)
+
+        return queryset

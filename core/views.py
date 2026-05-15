@@ -151,7 +151,6 @@ class EntradaViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
 
     search_fields = [
-        'cliente__nombre',
         'representante__nombre',
         'representante__apodo',
     ]

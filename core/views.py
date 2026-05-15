@@ -143,7 +143,6 @@ class RepresentanteViewSet(viewsets.ModelViewSet):
 class EntradaViewSet(viewsets.ModelViewSet):
 
     queryset = Entrada.objects.select_related(
-        'cliente',
         'representante'
     )
 

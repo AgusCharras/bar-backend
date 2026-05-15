@@ -194,6 +194,9 @@ class AsistenciaRepresentante(models.Model):
     observaciones = models.TextField(blank=True)
 
     creado_en = models.DateTimeField(auto_now_add=True)
+    
+    hora_ingreso = models.TimeField(null=True, blank=True)
+    hora_egreso = models.TimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.representante} - {self.fecha}"
@@ -201,3 +204,10 @@ class AsistenciaRepresentante(models.Model):
     class Meta:
         #ordering = ['-fecha', '-hora_inicio']
         ordering = ['-fecha']
+        
+        constraints = [
+        models.UniqueConstraint(
+            fields=['representante', 'fecha'],
+            name='unique_asistencia_por_dia'
+            )
+        ]

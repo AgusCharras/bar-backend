@@ -53,10 +53,10 @@ class ClienteViewSet(viewsets.ModelViewSet):
     
     def get_permissions(self):
         if self.action == 'create':
-            #return [IsAuthenticated(), (PuedeCrearCliente())]
-            return []
-        #return [IsAuthenticated()]
-        return []
+            return [IsAuthenticated(), (PuedeCrearCliente())]
+            #return []
+        return [IsAuthenticated()]
+        #return []
 
 
 class ReservaViewSet(viewsets.ModelViewSet):
@@ -113,10 +113,10 @@ class ReservaViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update']:
-            #return [IsAuthenticated(), (EsEncargadoOJefe())]
-            return []
-        #return [IsAuthenticated()]
-        return []
+            return [IsAuthenticated(), (EsEncargadoOJefe())]
+            #return []
+        return [IsAuthenticated()]
+        #return []
 
 class VoucherViewSet(viewsets.ModelViewSet):
     queryset = Voucher.objects.all()
@@ -125,8 +125,8 @@ class VoucherViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['create', 'update', 'destroy']:
             return [IsAuthenticated(), EsJefe()]
-        #return [IsAuthenticated()]
-        return []
+        return [IsAuthenticated()]
+        #return []
         
 
 
@@ -137,8 +137,8 @@ class RepresentanteViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['create', 'update', 'destroy']:
             return [IsAuthenticated(), EsJefe()]
-        #return [IsAuthenticated()]
-        return []
+        return [IsAuthenticated()]
+        #return []
     
 class EntradaViewSet(viewsets.ModelViewSet):
 
@@ -169,6 +169,12 @@ class EntradaViewSet(viewsets.ModelViewSet):
 
         return queryset
     
+        def get_permissions(self):
+            if self.action in ['create', 'update', 'destroy']:
+                return [IsAuthenticated(), EsJefe()]
+            return [IsAuthenticated()]
+            #return []
+    
 class AsistenciaRepresentanteViewSet(viewsets.ModelViewSet):
 
     queryset = AsistenciaRepresentante.objects.select_related(
@@ -186,3 +192,9 @@ class AsistenciaRepresentanteViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(fecha=fecha)
 
         return queryset
+    
+        def get_permissions(self):
+            if self.action in ['create', 'update', 'destroy']:
+                return [IsAuthenticated(), EsJefe()]
+            return [IsAuthenticated()]
+            #return []

@@ -197,6 +197,8 @@ class AsistenciaRepresentante(models.Model):
     
     hora_ingreso = models.TimeField(null=True, blank=True)
     hora_egreso = models.TimeField(null=True, blank=True)
+    
+    acompañantes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.representante} - {self.fecha}"

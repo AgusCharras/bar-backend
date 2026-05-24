@@ -169,11 +169,11 @@ class EntradaViewSet(viewsets.ModelViewSet):
 
         return queryset
     
-        def get_permissions(self):
-            if self.action in ['create', 'update', 'destroy']:
-                return [IsAuthenticated(), EsJefe()]
-            return [IsAuthenticated()]
-            #return []
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'destroy']:
+            return [IsAuthenticated(), EsJefe()]
+        return [IsAuthenticated()]
+        #return []
     
 class AsistenciaRepresentanteViewSet(viewsets.ModelViewSet):
 
@@ -193,8 +193,8 @@ class AsistenciaRepresentanteViewSet(viewsets.ModelViewSet):
 
         return queryset
     
-        def get_permissions(self):
-            if self.action in ['create', 'update', 'destroy']:
-                return [IsAuthenticated(), EsJefe()]
-            return [IsAuthenticated()]
-            #return []
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'destroy']:
+            return [IsAuthenticated(), EsJefe()]
+        return [IsAuthenticated()]
+        #return []

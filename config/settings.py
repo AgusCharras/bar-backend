@@ -83,12 +83,27 @@ DATABASES = {
 }
 """
 
+"""
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
         conn_max_age=600
     )
 }
+"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres.eizxknxwzhwlrntgqlyv',
+        'PASSWORD': '414supabase',
+        'HOST': 'aws-1-us-west-2.pooler.supabase.com',
+        'PORT': '6543',
+    }
+}
+
+
 
 
 # Password validation

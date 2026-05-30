@@ -1,0 +1,163 @@
+[
+{
+  "model": "core.cliente",
+  "pk": 1,
+  "fields": {
+    "nombre": "Calderon Fabricio",
+    "telefono": "5493544234567",
+    "cumpleanios": "2002-05-31",
+    "estado_contacto": "no_contesto",
+    "turno": "ambos",
+    "aprobado": true,
+    "observaciones": "",
+    "creado_en": "2026-04-21T04:44:24.975Z"
+  }
+},
+{
+  "model": "core.cliente",
+  "pk": 2,
+  "fields": {
+    "nombre": "Guzman Agustin",
+    "telefono": "5493544234234",
+    "cumpleanios": "2001-09-08",
+    "estado_contacto": "no_contesto",
+    "turno": "ambos",
+    "aprobado": true,
+    "observaciones": "",
+    "creado_en": "2026-04-21T04:45:14.988Z"
+  }
+},
+{
+  "model": "core.cliente",
+  "pk": 3,
+  "fields": {
+    "nombre": "Lopez Candela",
+    "telefono": "5493543234437",
+    "cumpleanios": "2001-07-20",
+    "estado_contacto": "no_reservo",
+    "turno": "ambos",
+    "aprobado": true,
+    "observaciones": "",
+    "creado_en": "2026-04-21T06:10:23.547Z"
+  }
+},
+{
+  "model": "core.voucher",
+  "pk": 1,
+  "fields": {
+    "nombre": "2x1 birra",
+    "descripcion": "",
+    "estado": "activo",
+    "creado_en": "2026-04-21T04:54:05.046Z"
+  }
+},
+{
+  "model": "core.voucher",
+  "pk": 2,
+  "fields": {
+    "nombre": "Pizza gratis",
+    "descripcion": "",
+    "estado": "activo",
+    "creado_en": "2026-04-21T04:56:22.790Z"
+  }
+},
+{
+  "model": "core.voucher",
+  "pk": 3,
+  "fields": {
+    "nombre": "Gin gratis",
+    "descripcion": "",
+    "estado": "activo",
+    "creado_en": "2026-04-21T04:56:32.862Z"
+  }
+},
+{
+  "model": "core.representante",
+  "pk": 1,
+  "fields": {
+    "nombre": "Bocamouth Ornella",
+    "apodo": "Coco",
+    "telefono": "5493544236512",
+    "estado": "activo",
+    "creado_en": "2026-04-21T04:54:40.103Z"
+  }
+},
+{
+  "model": "core.reserva",
+  "pk": 1,
+  "fields": {
+    "cliente": 2,
+    "representante": 1,
+    "fecha": "2026-04-25",
+    "hora_inicio": "20:00:00",
+    "cantidad_personas": 10,
+    "cantidad_personas_reales": null,
+    "estado": "a_confirmar",
+    "tipo_entrada": "free_sin_representante",
+    "observaciones": "",
+    "creado_en": "2026-04-21T04:55:48.542Z",
+    "vouchers": [
+      1
+    ]
+  }
+},
+{
+  "model": "core.reserva",
+  "pk": 2,
+  "fields": {
+    "cliente": 3,
+    "representante": null,
+    "fecha": "2026-04-25",
+    "hora_inicio": "20:00:00",
+    "cantidad_personas": 5,
+    "cantidad_personas_reales": null,
+    "estado": "a_confirmar",
+    "tipo_entrada": "free_sin_representante",
+    "observaciones": "",
+    "creado_en": "2026-04-21T06:11:12.241Z",
+    "vouchers": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "core.reserva",
+  "pk": 3,
+  "fields": {
+    "cliente": 1,
+    "representante": null,
+    "fecha": "2026-04-26",
+    "hora_inicio": "22:00:00",
+    "cantidad_personas": 7,
+    "cantidad_personas_reales": null,
+    "estado": "a_confirmar",
+    "tipo_entrada": "free_sin_representante",
+    "observaciones": "",
+    "creado_en": "2026-04-21T06:11:57.203Z",
+    "vouchers": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$4u5utEUGhyFoNTb6gfDVj2$RB9EQONUWBa7m+rarT/qT+58gDus/dBCfHsfkVbgdEM=",
+    "last_login": "2026-05-12T19:23:55.328Z",
+    "is_superuser": true,
+    "username": "user",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-04-21T04:30:50.255Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

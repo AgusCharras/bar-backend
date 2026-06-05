@@ -100,6 +100,22 @@ class Representante(models.Model):
 
     def __str__(self):
         return self.apodo or self.nombre
+    
+class Embajador(models.Model):
+    nombre = models.CharField(max_length=150)
+    apodo = models.CharField(max_length=100, blank=True)
+    telefono = models.CharField(max_length=20, unique=True)
+
+    estado = models.CharField(
+        max_length=10,
+        choices=EstadoRepresentante.choices,
+        default=EstadoRepresentante.ACTIVO
+    )
+
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.apodo or self.nombre
 
 class Reserva(models.Model):
     
@@ -211,5 +227,40 @@ class AsistenciaRepresentante(models.Model):
         models.UniqueConstraint(
             fields=['representante', 'fecha'],
             name='unique_asistencia_por_dia'
+            )
+        ]
+        
+class AsistenciaEmbajador(models.Model):
+
+    embajador = models.ForeignKey(
+        Embajador,
+        on_delete=models.CASCADE,
+        related_name="asistencias"
+    )
+
+    fecha = models.DateField()
+
+    presente = models.BooleanField(default=True)
+
+    observaciones = models.TextField(blank=True)
+
+    creado_en = models.DateTimeField(auto_now_add=True)
+    
+    hora_ingreso = models.TimeField(null=True, blank=True)
+    hora_egreso = models.TimeField(null=True, blank=True)
+    
+    acompañantes = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.embajador} - {self.fecha}"
+    
+    class Meta:
+        #ordering = ['-fecha', '-hora_inicio']
+        ordering = ['-fecha']
+        
+        constraints = [
+        models.UniqueConstraint(
+            fields=['embajador', 'fecha'],
+            name='unique_asistencia_embajador_por_dia'
             )
         ]

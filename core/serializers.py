@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Cliente, Reserva, Voucher, Representante, Entrada, AsistenciaRepresentante
+from .models import Cliente, Reserva, Voucher, Representante, Entrada, AsistenciaRepresentante, Embajador, AsistenciaEmbajador
 
 '''
 Estos Serializers convierten:
@@ -26,6 +26,10 @@ class RepresentanteSerializer(serializers.ModelSerializer):
         model = Representante
         fields = '__all__'
 
+class EmbajadorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Embajador
+        fields = '__all__'
         
 class ReservaSerializer(serializers.ModelSerializer):
     cliente_nombre = serializers.CharField(source='cliente.nombre', read_only=True)
@@ -50,4 +54,9 @@ class EntradaSerializer(serializers.ModelSerializer):
 class AsistenciaRepresentanteSerializer(serializers.ModelSerializer):
     class Meta:
         model = AsistenciaRepresentante
+        fields = '__all__'
+        
+class AsistenciaEmbajadorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AsistenciaEmbajador
         fields = '__all__'

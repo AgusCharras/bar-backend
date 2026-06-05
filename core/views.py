@@ -1,14 +1,16 @@
 from django.shortcuts import render
 
 from rest_framework import viewsets, filters
-from .models import Cliente, Reserva, Voucher, Representante, Entrada, AsistenciaRepresentante
+from .models import Cliente, Reserva, Voucher, Representante, Entrada, AsistenciaRepresentante, Embajador, AsistenciaEmbajador
 from .serializers import (
     ClienteSerializer,
     ReservaSerializer,
     VoucherSerializer,
     RepresentanteSerializer,
     EntradaSerializer,
-    AsistenciaRepresentanteSerializer
+    AsistenciaRepresentanteSerializer,
+    EmbajadorSerializer,
+    AsistenciaEmbajadorSerializer
 )
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -142,6 +144,16 @@ class RepresentanteViewSet(viewsets.ModelViewSet):
             return [IsAuthenticated(), EsJefe()]
         return [IsAuthenticated()]
         #return []
+        
+class EmbajadorViewSet(viewsets.ModelViewSet):
+    queryset = Embajador.objects.all()
+    serializer_class = EmbajadorSerializer
+
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'destroy']:
+            return [IsAuthenticated(), (EsEncargadoOJefe())]
+        
+        return [IsAuthenticated()]
     
 class EntradaViewSet(viewsets.ModelViewSet):
 
@@ -185,6 +197,30 @@ class AsistenciaRepresentanteViewSet(viewsets.ModelViewSet):
     )
 
     serializer_class = AsistenciaRepresentanteSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        fecha = self.request.query_params.get('fecha')
+
+        if fecha:
+            queryset = queryset.filter(fecha=fecha)
+
+        return queryset
+    
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'destroy']:
+            return [IsAuthenticated(), (EsEncargadoOJefe())]
+        return [IsAuthenticated()]
+        #return []
+        
+class AsistenciaEmbajadorViewSet(viewsets.ModelViewSet):
+
+    queryset = AsistenciaEmbajador.objects.select_related(
+        'embajador'
+    )
+
+    serializer_class = AsistenciaEmbajadorSerializer
 
     def get_queryset(self):
         queryset = super().get_queryset()

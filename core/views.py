@@ -38,10 +38,13 @@ class ClienteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         
-        queryset = queryset.exclude(cumpleanios__isnull=True)
+        #queryset = queryset.exclude(cumpleanios__isnull=True)
         
         dia = self.request.query_params.get("dia")
         mes = self.request.query_params.get("mes")
+        
+        if dia or mes:
+            queryset = queryset.exclude(cumpleanios_isnull=True)
         
         if dia:
             queryset = queryset.filter(cumpleanios__day=dia)
@@ -171,7 +174,7 @@ class EntradaViewSet(viewsets.ModelViewSet):
     
     def get_permissions(self):
         if self.action in ['create', 'update', 'destroy']:
-            return [IsAuthenticated(), EsJefe()]
+            return [IsAuthenticated(), (EsEncargadoOJefe())]
         return [IsAuthenticated()]
         #return []
     
@@ -195,6 +198,6 @@ class AsistenciaRepresentanteViewSet(viewsets.ModelViewSet):
     
     def get_permissions(self):
         if self.action in ['create', 'update', 'destroy']:
-            return [IsAuthenticated(), EsJefe()]
+            return [IsAuthenticated(), (EsEncargadoOJefe())]
         return [IsAuthenticated()]
         #return []

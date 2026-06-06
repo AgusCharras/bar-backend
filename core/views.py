@@ -46,7 +46,7 @@ class ClienteViewSet(viewsets.ModelViewSet):
         mes = self.request.query_params.get("mes")
         
         if dia or mes:
-            queryset = queryset.exclude(cumpleanios_isnull=True)
+            queryset = queryset.exclude(cumpleanios__isnull=True)
         
         if dia:
             queryset = queryset.filter(cumpleanios__day=dia)

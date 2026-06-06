@@ -190,6 +190,12 @@ class Entrada(models.Model):
     )
 
     cantidad_personas = models.PositiveIntegerField(default=1)
+    
+    vouchers = models.ManyToManyField(
+        Voucher,
+        blank=True,
+        related_name="entradas"
+    )
 
     creado_en = models.DateTimeField(auto_now_add=True)
 

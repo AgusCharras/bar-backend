@@ -138,6 +138,8 @@ class VoucherViewSet(viewsets.ModelViewSet):
 class RepresentanteViewSet(viewsets.ModelViewSet):
     queryset = Representante.objects.all()
     serializer_class = RepresentanteSerializer
+    
+    pagination_class = None
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'destroy']:

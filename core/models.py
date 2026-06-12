@@ -37,6 +37,9 @@ class TipoEntrada(models.TextChoices):
     FREE = "free", "Free"
     COBRADA_CON_CONSUMIBLE = "cobrada_con_consumible", "Cobrada con consumible"
     COBRADA_SIN_CONSUMIBLE = "cobrada_sin_consumible", "Cobrada sin consumible"
+    
+    A_BAILAR = "a_bailar", "A bailar"
+    A_CENAR = "a_cenar", "A cenar"
 
 # =========================
 # MODELOS

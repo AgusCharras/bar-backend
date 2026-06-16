@@ -16,7 +16,11 @@ from .serializers import (
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from .permissions import EsRepresentante, EsEncargadoOJefe, EsJefe, PuedeCrearCliente
-from django.db.models import Q
+from django.db.models import Q, Sum, Count
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import action
+
 
 
 '''
@@ -239,3 +243,105 @@ class AsistenciaEmbajadorViewSet(viewsets.ModelViewSet):
             return [IsAuthenticated(), (EsEncargadoOJefe())]
         return [IsAuthenticated()]
         #return []
+        
+class ReportesViewSet(viewsets.ViewSet):
+
+    #permission_classes = [IsAuthenticated]
+
+    @action(detail=False, methods=['get'])
+    def reservas(self, request):
+
+        fecha = request.query_params.get('fecha')
+        desde = request.query_params.get('desde')
+        hasta = request.query_params.get('hasta')
+
+        reservas = Reserva.objects.select_related(
+            'representante'
+        )
+
+        if fecha:
+            reservas = reservas.filter(fecha=fecha)
+
+        if desde:
+            reservas = reservas.filter(fecha__gte=desde)
+
+        if hasta:
+            reservas = reservas.filter(fecha__lte=hasta)
+
+        resumen = reservas.aggregate(
+            cantidad_reservas=Count('id'),
+            esperados=Sum('cantidad_personas'),
+            reales=Sum('cantidad_personas_reales')
+        )
+
+        esperados = resumen['esperados'] or 0
+        reales = resumen['reales'] or 0
+        faltaron = esperados - reales
+
+        porcentaje_asistencia = 0
+
+        if esperados > 0:
+            porcentaje_asistencia = round(
+                (reales / esperados) * 100,
+                2
+            )
+
+        representantes = (
+            reservas
+            .exclude(representante__isnull=True)
+            .values(
+                'representante__id',
+                'representante__nombre',
+                'representante__apodo'
+            )
+            .annotate(
+                cantidad_reservas=Count('id'),
+                esperados=Sum('cantidad_personas'),
+                reales=Sum('cantidad_personas_reales')
+            )
+            .order_by('-reales')
+        )
+
+        representantes_limpios = []
+
+        for rep in representantes:
+
+            esperados_rep = rep['esperados'] or 0
+            reales_rep = rep['reales'] or 0
+
+            faltaron_rep = esperados_rep - reales_rep
+
+            porcentaje_rep = 0
+
+            if esperados_rep > 0:
+                porcentaje_rep = round(
+                    (reales_rep / esperados_rep) * 100,
+                    2
+                )
+
+            representantes_limpios.append({
+                "id": rep["representante__id"],
+                "nombre": rep["representante__nombre"],
+                "apodo": rep["representante__apodo"],
+                "cantidad_reservas": rep["cantidad_reservas"],
+                "esperados": esperados_rep,
+                "reales": reales_rep,
+                "faltaron": faltaron_rep,
+                "porcentaje_asistencia": porcentaje_rep
+            })
+
+        representantes_limpios.sort(
+            key=lambda x: x["reales"],
+            reverse=True
+        )
+
+        return Response({
+            "resumen": {
+                "cantidad_reservas": resumen['cantidad_reservas'] or 0,
+                "esperados": esperados,
+                "reales": reales,
+                "faltaron": faltaron,
+                "porcentaje_asistencia": porcentaje_asistencia
+            },
+            "representantes": representantes_limpios
+        })

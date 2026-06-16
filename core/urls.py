@@ -7,8 +7,13 @@ from .views import (
     EntradaViewSet,
     AsistenciaRepresentanteViewSet,
     EmbajadorViewSet,
-    AsistenciaEmbajadorViewSet
+    AsistenciaEmbajadorViewSet,
+    ReportesViewSet
 )
+
+from django.urls import path
+
+#VIEWSETS
 
 router = DefaultRouter()
 router.register(r'clientes', ClienteViewSet)
@@ -19,5 +24,8 @@ router.register(r'entradas', EntradaViewSet)
 router.register(r'asistencias', AsistenciaRepresentanteViewSet)
 router.register(r'embajadores', EmbajadorViewSet)
 router.register(r'asistencias-embajadores', AsistenciaEmbajadorViewSet)
+router.register(r'reportes', ReportesViewSet, basename='reportes')
+
 
 urlpatterns = router.urls
+

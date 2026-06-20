@@ -154,6 +154,8 @@ class RepresentanteViewSet(viewsets.ModelViewSet):
 class EmbajadorViewSet(viewsets.ModelViewSet):
     queryset = Embajador.objects.all()
     serializer_class = EmbajadorSerializer
+    
+    pagination_class = None
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'destroy']:

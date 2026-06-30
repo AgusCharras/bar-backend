@@ -311,7 +311,7 @@ class ReportesViewSet(viewsets.ViewSet):
             esperados_rep = rep['esperados'] or 0
             reales_rep = rep['reales'] or 0
 
-            faltaron_rep = esperados_rep - reales_rep
+            faltaron_rep = max(esperados_rep - reales_rep, 0)
 
             porcentaje_rep = 0
 

@@ -40,6 +40,15 @@ class TipoEntrada(models.TextChoices):
     
     A_BAILAR = "a_bailar", "A bailar"
     A_CENAR = "a_cenar", "A cenar"
+    
+class MetodoPago(models.TextChoices):
+    EFECTIVO = "efectivo", "Efectivo"
+    DEBITO = "debito", "Débito"
+    QR = "qr", "QR"
+
+class TipoConsumible(models.TextChoices):
+    HOMBRE = "hombre", "Consumible Hombre"
+    MUJER = "mujer", "Consumible Mujer"
 
 # =========================
 # MODELOS
@@ -198,6 +207,20 @@ class Entrada(models.Model):
         Voucher,
         blank=True,
         related_name="entradas"
+    )
+
+    metodo_pago = models.CharField(
+        max_length=10,
+        choices=MetodoPago.choices,
+        null=True,
+        blank=True
+    )
+
+    tipo_consumible = models.CharField(
+        max_length=10,
+        choices=TipoConsumible.choices,
+        null=True,
+        blank=True
     )
 
     creado_en = models.DateTimeField(auto_now_add=True)
